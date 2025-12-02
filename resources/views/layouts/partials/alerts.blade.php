@@ -1,0 +1,1 @@
+<?php if(session('success')): ?><div class="alert alert-success"><?php echo session('success'); ?></div><?php endif; ?><?php if(isset($errors) && $errors->any()): ?><div class="alert alert-danger"><?php echo implode('<br>',$errors->all()); ?></div><?php endif; ?>
