@@ -58,11 +58,13 @@ Route::middleware(['auth'])->group(function(){
     // Item routes
     Route::middleware(['permission:item-read'])->group(function(){
         Route::get('items', [ItemController::class, 'index'])->name('items.index');
-        Route::get('items/{item}', [ItemController::class, 'show'])->name('items.show');
     });
     Route::middleware(['permission:item-create'])->group(function(){
         Route::get('items/create', [ItemController::class, 'create'])->name('items.create');
         Route::post('items', [ItemController::class, 'store'])->name('items.store');
+    });
+    Route::middleware(['permission:item-read'])->group(function(){
+        Route::get('items/{item}', [ItemController::class, 'show'])->name('items.show');
     });
     Route::middleware(['permission:item-update'])->group(function(){
         Route::get('items/{item}/edit', [ItemController::class, 'edit'])->name('items.edit');
