@@ -6,6 +6,7 @@ use App\Models\Sale;
 use App\Models\SaleItem;
 use App\Models\Item;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class SaleController extends Controller
 {
@@ -44,7 +45,7 @@ class SaleController extends Controller
 
         for ($attempt = 0; $attempt < $maxAttempts; $attempt++) {
             try {
-                return \DB::transaction(function () use ($r) {
+                return DB::transaction(function () use ($r) {
                     // Generate code inside transaction with lock
                     $code = \App\Helpers\Helper::generateCode('SL', Sale::class);
 

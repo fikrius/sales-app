@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Item;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Intervention\Image\Laravel\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 
@@ -35,7 +36,7 @@ class ItemController extends Controller
 
         while ($attempt < $maxAttempts) {
             try {
-                return \DB::transaction(function () use ($r) {
+                return DB::transaction(function () use ($r) {
                     $data = [
                         'code' => \App\Helpers\Helper::generateCode('ITM', Item::class),
                         'name' => $r->name,

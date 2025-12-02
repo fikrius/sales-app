@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Payment;
 use App\Models\Sale;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PaymentController extends Controller
 {
@@ -42,7 +43,7 @@ class PaymentController extends Controller
 
         while ($attempt < $maxAttempts) {
             try {
-                return \DB::transaction(function () use ($r, $sale, $paidAmount) {
+                return DB::transaction(function () use ($r, $sale, $paidAmount) {
                     // Generate code inside transaction
                     $code = \App\Helpers\Helper::generateCode('PY', Payment::class);
 
@@ -137,12 +138,10 @@ class PaymentController extends Controller
     public function destroy(Payment $payment)
     {
         $sale = $payment->sale;
-
+        
         // Use transaction for data consistency
-        \DB::transaction(function () use ($payment, $sale) {
-            $payment->delete();
-
-            // Recalculate sale status after deletion
+        DB::transaction(function () use ($payment, $sale) {
+            $payment->delete();            // Recalculate sale status after deletion
             $totalPaid = $sale->payments()->sum('amount');
 
             if ($totalPaid >= $sale->total_price) {

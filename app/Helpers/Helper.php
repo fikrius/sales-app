@@ -2,6 +2,8 @@
 
 namespace App\Helpers;
 
+use Illuminate\Support\Facades\DB;
+
 class Helper
 {
     /**
@@ -21,7 +23,7 @@ class Helper
         $table = (new $modelClass)->getTable();
         
         // Use raw query with FOR UPDATE to lock the rows
-        $lastCode = \DB::selectOne(
+        $lastCode = DB::selectOne(
             "SELECT $column FROM $table WHERE $column LIKE ? ORDER BY $column DESC LIMIT 1 FOR UPDATE",
             [$pattern]
         );
